@@ -4,5 +4,5 @@
 
 # Links 
 
-github repo link: 
-browser link: 
+github repo link: https://truthsrebirth.github.io/CodeQuiz4/
+browser link: https://github.com/truthsrebirth/CodeQuiz4
