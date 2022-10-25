@@ -1,60 +1,56 @@
 // This section if for the high scores 
+// target the scores/buttons/viewScores id's in the html file
 let scoresDiv = document.getElementById("scores");
 let buttonsDiv = document.getElementById("buttons")
 let viewScoresBtn = document.getElementById("viewScores")
 
-// arrays for highscores and for local storage 
+// the arrays for local storage and high scores
 let emptyArray = [];
-let storedArray = JSON.parse(window.localStorage.getItem("highScores"));
+let storedArray = JSON.parse(window.localStorage.getItem("highScores")); // local storage
 let score = 0
 
 // time 
-let secondsLeft = 76;
-let timer = document.getElementById("timer");
+let secondsLeft = 30; // leave 30 secs for each question
+let timer = document.getElementById("timer"); // here I target the id = timer in the html file
 
-//choices section 
+// Here I target the results & choices id'd from the html file
 var choices = document.getElementById("choices");
 let results = document.getElementById("results");
 
-//start button 
-let startButton = document.getElementById("startButton");
-startButton.addEventListener("click", setTime);
+// This is for the start button 
+let startButton = document.getElementById("startButton"); // target the startButton id in the html file
+startButton.addEventListener("click", setTime); // when the user clicks the button, it will run the setTime function below
 
-//questions
-var questionDiv = document.getElementById("question");
+var questionDiv = document.getElementById("question"); // target the id=question in the html file
 var questionCount = 0;
 
-
-
-
-// This funtion will set the timer as soon as quiz is started 
-function setTime() {
+// This function starts the time for the quiz 
+function setTime() { // function on line 22
   displayQuestions();
   let timerInterval = setInterval(function() {
     secondsLeft--;
     timer.textContent = "";
     timer.textContent = "Time: " + secondsLeft;
     if (secondsLeft <= 0 || questionCount === questions.length) {
-      clearInterval(timerInterval);
+      clearInterval(timerInterval); // must have this for timer
       captureUserScore();
     } 
-  }, 1000);
+  }, 1000); // 1000 milliseconds is 1 second
 }
 
-// This funtion will let the user go back and restart the quiz 
+// This function lets the user go back and restart the quiz 
 function goBackBtn() {
     let backBtn = document.createElement("input");
     backBtn.setAttribute("type", "button");
     backBtn.setAttribute("value", "Go Back");
-    backBtn.addEventListener("click", function(event){
+    backBtn.addEventListener("click", function(event){ // add event listener
       event.preventDefault();
       window.location.reload();
     })
     buttonsDiv.append(backBtn)
   }
 
-
-  // This funtion displays questions 
+  // Here is a function that displays the questions for my quiz
 function displayQuestions() {
   removeEls(startButton);
 
@@ -67,7 +63,7 @@ function displayQuestions() {
       el.innerText = questions[questionCount].multiChoice[i];
       el.setAttribute("data-id", i);
       el.addEventListener("click", function (event) {
-        event.stopPropagation();
+        event.stopPropagation(); // use this for forms
 
         if (el.innerText === questions[questionCount].answer) {
           score += secondsLeft;
@@ -90,12 +86,13 @@ function displayQuestions() {
   }
 }
 
-// This funtion will capture the users score 
+// Use this function below to capture the user's score
 function captureUserScore() {
   timer.remove();
   choices.textContent = "";
 
-  let initialsInput = document.createElement("input");
+  // target the input element in the html file
+  let initialsInput = document.createElement("input"); 
   let postScoreBtn = document.createElement("input");
 
   results.innerHTML = `You scored ${score} points! Enter initials: `;
@@ -139,9 +136,7 @@ const removeEls = (...els) => {
   for (let el of els) el.remove();
 }
 
-
-// This funtion will help view the scores 
-function viewScores() {
+function viewScores() { // Function to view the scores
   viewScoresBtn.addEventListener("click", function(event) {
     event.preventDefault();
     removeEls(timer, startButton);
@@ -152,8 +147,7 @@ function viewScores() {
   });
 }
 
-// This funciton will clear all scores from local drive 
-function clearScoresBtn() {    
+function clearScoresBtn() { // clears the scores
     let clearBtn = document.createElement("input");
     clearBtn.setAttribute("type", "button");
     clearBtn.setAttribute("value", "Clear Scores");
@@ -165,8 +159,7 @@ function clearScoresBtn() {
     scoresDiv.append(clearBtn)
   }
 
-// This funtion helps with the displaying of the scores on the local storage
-function displayAllScores() {
+function displayAllScores() { // display the scores on screen
     removeEls(timer, startButton, results);
     let scoresArray = defineScoresArray(storedArray, emptyArray);
   
@@ -178,8 +171,5 @@ function displayAllScores() {
       scoresDiv.append(resultsP);
     });
   }
-  
 
-
-
-viewScores();
+viewScores(); // call the view scores function from line 139
